@@ -1,3 +1,6 @@
+// Scriptorium Bíblico: servidor da IA
+// Copyright (C) 2026 Everton Ferreira
+// Licenciado sob a GNU General Public License v3.0 ou posterior. Veja o arquivo LICENSE.
 // Servidor da IA do Scriptorium Bíblico (Cloudflare Worker)
 // Recebe o pedido do app, chama a API da Anthropic com a SUA chave (guardada
 // como segredo na Cloudflare, nunca dentro do app) e devolve o texto em tempo real.

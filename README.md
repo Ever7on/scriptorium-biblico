@@ -39,6 +39,16 @@ Ferramenta de estudo sistemático da Bíblia em português, feita para celular e
 | `lib/`, `fonts/` | Bibliotecas de exportação (jsPDF, docx) e fonte FreeSerif |
 | `servidor-ia/worker.js` | Servidor da IA para Cloudflare Workers. A chave da API fica só na Cloudflare, nunca neste repositório |
 
+## Licença
+
+Copyright (C) 2026 Everton Ferreira
+
+O código deste projeto (HTML, JavaScript e o servidor da IA) é software livre: você pode redistribuí-lo e modificá-lo sob os termos da GNU General Public License, versão 3 ou posterior, publicada pela Free Software Foundation. Veja o arquivo [LICENSE](LICENSE).
+
+Qualquer versão modificada que for distribuída deve manter este aviso de autoria e continuar sob a mesma licença, com o código aberto.
+
+Os dados bíblicos, léxicos e referências mantêm as licenças de suas fontes, listadas abaixo. A GPL não se aplica a eles.
+
 ## Fontes e licenças dos dados
 
 | Conteúdo | Fonte | Licença |

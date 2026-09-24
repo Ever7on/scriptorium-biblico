@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scriptorium Bíblico · Guia de publicação</title>
+<style>
+:root{--bg:#F3F4F1;--panel:#fff;--ink:#1B2230;--muted:#5D6574;--line:#DADDE1;--accent:#1F4E8C;--soft:#E2EAF5;--rubric:#A3352A;--ok:#2F7A4A}
+@media (prefers-color-scheme: dark){:root{--bg:#10141B;--panel:#171C25;--ink:#E3E6EB;--muted:#9BA3B1;--line:#2A313C;--accent:#8FB0E6;--soft:#1F2B3F;--rubric:#E58C7F;--ok:#6CC08C}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:36px 18px 70px}
+h1{font:600 30px/1.2 Georgia,"Times New Roman",serif;margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 26px}
+h2{font:600 20px/1.3 Georgia,serif;margin:34px 0 10px;display:flex;gap:10px;align-items:baseline}
+h2 .n{font:600 12px/1 ui-monospace,Menlo,monospace;color:#fff;background:var(--rubric);border-radius:4px;padding:4px 7px}
+h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+ol,ul{padding-left:1.3em;margin:6px 0 10px} li{margin:0 0 6px}
+code,kbd{font:13px ui-monospace,Menlo,monospace;background:var(--soft);padding:1px 5px;border-radius:4px;word-break:break-all}
+pre{background:var(--soft);padding:10px 12px;border-radius:8px;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,monospace}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--soft);color:var(--accent)}
+.warn{border-left:3px solid var(--rubric)}
+.ok{border-left:3px solid var(--ok)}
+a{color:var(--accent)}
+.check li{list-style:none;margin-left:-1.2em}
+.check li::before{content:"☐ ";color:var(--muted)}
+</style></head><body><main>
+<h1>Scriptorium Bíblico · Guia de publicação</h1>
+<p class="lead">Como colocar o app no ar como PWA (site instalável), ativar a IA e instalar no celular. Não precisa programar nem usar linha de comando.</p>
+
+<div class="card">
+<h3 style="margin-top:0">O que há no pacote</h3>
+<table>
+<tr><th>Pasta ou arquivo</th><th>Para que serve</th></tr>
+<tr><td><code>scriptorium/</code></td><td>O app completo. É esta pasta que você publica.</td></tr>
+<tr><td><code>scriptorium/config.js</code></td><td>O único arquivo que você edita: o endereço do servidor da IA.</td></tr>
+<tr><td><code>scriptorium/privacidade.html</code></td><td>Política de privacidade. Troque <b>[seu e-mail de contato]</b> antes de publicar.</td></tr>
+<tr><td><code>servidor-ia/worker.js</code></td><td>Código do servidor da IA (opcional), para colar na Cloudflare.</td></tr>
+</table>
+</div>
+
+<h2><span class="n">1</span> Publicar o app <span class="tag">gratuito · 10 min</span></h2>
+<ol>
+<li>Descompacte o arquivo <code>scriptorium-pwa.zip</code> no computador.</li>
+<li>Abra <code>scriptorium/privacidade.html</code> num editor de texto (Bloco de Notas, TextEdit) e troque <b>[seu e-mail de contato]</b> pelo seu e-mail.</li>
+<li>Crie uma conta gratuita em <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">dash.cloudflare.com</a>.</li>
+<li>No painel, vá em <b>Workers &amp; Pages → Create → Pages → Upload assets</b> (enviar arquivos).</li>
+<li>Dê o nome <b>scriptorium</b> ao projeto e arraste a pasta <code>scriptorium</code> inteira.</li>
+<li>Clique em <b>Deploy</b>. Em cerca de um minuto o app estará em <code>https://scriptorium.pages.dev</code> (ou um nome parecido, se esse já existir).</li>
+</ol>
+<div class="card ok">Pronto: o app já funciona sem IA, com leitura, original, léxico, chave bíblica, referências, crenças, Ellen White, enciclopédia, notas, estudos e exportação em PDF e Word.</div>
+
+<h2><span class="n">2</span> Ativar a IA <span class="tag">opcional · pago por uso</span></h2>
+<h3>2a. Criar a chave da API</h3>
+<ol>
+<li>Acesse <a href="https://platform.claude.com" target="_blank" rel="noopener">platform.claude.com</a>, crie a conta e adicione créditos em <b>Billing</b> (por exemplo, US$ 5 para começar).</li>
+<li>Em <b>API Keys</b>, crie uma chave e copie-a. Ela começa com <code>sk-ant-</code>. Não a coloque em nenhum arquivo do app nem a compartilhe.</li>
+</ol>
+<h3>2b. Criar o servidor na Cloudflare</h3>
+<ol>
+<li>No painel da Cloudflare: <b>Workers &amp; Pages → Create → Workers → Start with Hello World</b>. Nome: <b>scriptorium-ia</b>. Clique em <b>Deploy</b>.</li>
+<li>Clique em <b>Edit code</b>, apague o conteúdo, cole todo o arquivo <code>servidor-ia/worker.js</code> e clique em <b>Deploy</b>.</li>
+<li>Em <b>Settings → Variables and Secrets</b>, adicione:
+<table>
+<tr><th>Nome</th><th>Tipo</th><th>Valor</th></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code></td><td>Secret</td><td>a chave <code>sk-ant-…</code></td></tr>
+<tr><td><code>ALLOWED_ORIGIN</code></td><td>Text</td><td>o endereço do app, ex.: <code>https://scriptorium.pages.dev</code></td></tr>
+<tr><td><code>APP_ACCESS_CODE</code></td><td>Secret</td><td>um código só seu (recomendado, veja abaixo)</td></tr>
+</table></li>
+<li>Copie o endereço do Worker, algo como <code>https://scriptorium-ia.seu-usuario.workers.dev</code>. Ao abri-lo no navegador, deve aparecer "Servidor de IA do Scriptorium Bíblico: ativo."</li>
+</ol>
+<h3>2c. Ligar o app ao servidor</h3>
+<ol>
+<li>Abra <code>scriptorium/config.js</code> e cole o endereço entre as aspas:
+<pre>aiEndpoint: "https://scriptorium-ia.seu-usuario.workers.dev"</pre></li>
+<li>No projeto <b>scriptorium</b> do Pages, clique em <b>Create deployment</b> e envie a pasta de novo.</li>
+<li>No app, toque no ícone <b>ⓘ</b>, digite o código de acesso em <b>Inteligência artificial</b> e toque em <b>Salvar</b>.</li>
+</ol>
+<div class="card warn"><b>Por que o código de acesso importa:</b> quem usa a IA gasta créditos da sua chave. Com o código, só quem você autorizar consegue gerar comentários. Para abrir a IA ao público, remova o código e acompanhe os gastos em platform.claude.com. Lá também é possível definir um limite mensal de gastos.</div>
+
+<h3>Quanto custa a IA</h3>
+<p>O servidor usa o modelo <b>Claude Sonnet 5</b> (US$ 2 por milhão de tokens de entrada e US$ 10 por milhão de saída). Um comentário típico, com cerca de 3 mil tokens enviados e mil recebidos, sai por <b>perto de US$ 0,015</b>, ou seja, cerca de 65 comentários por dólar. Para trocar o modelo, crie a variável <code>ANTHROPIC_MODEL</code> no Worker. O plano gratuito da Cloudflare cobre até 100 mil pedidos por dia.</p>
+
+<h2><span class="n">3</span> Instalar no celular</h2>
+<table>
+<tr><th>Aparelho</th><th>Como instalar</th></tr>
+<tr><td>Android (Chrome)</td><td>Abra o endereço do app e toque em <b>Instalar app</b> no topo, ou no menu ⋮ → <b>Instalar app</b>.</td></tr>
+<tr><td>iPhone (Safari)</td><td>Abra o endereço, toque em <b>Compartilhar</b> → <b>Adicionar à Tela de Início</b>.</td></tr>
+<tr><td>Computador (Chrome/Edge)</td><td>Ícone de instalar na barra de endereço.</td></tr>
+</table>
+<p>Para usar sem internet: ícone <b>ⓘ</b> → <b>Baixar tudo para uso offline</b> (cerca de 35 MB). A IA sempre precisa de conexão.</p>
+
+<h2><span class="n">4</span> Cuidados</h2>
+<ul>
+<li><b>Notas e estudos ficam no aparelho</b> de cada pessoa. Oriente os usuários a usar <b>ⓘ → Exportar backup</b> antes de trocar de celular.</li>
+<li><b>Atualizações:</b> para publicar mudanças, envie a pasta de novo (<b>Create deployment</b>). Se alterar arquivos da pasta <code>data/</code>, abra <code>sw.js</code> e troque <code>scriptorium-v1</code> por <code>scriptorium-v2</code>, para os aparelhos baixarem os dados novos.</li>
+<li><b>Domínio próprio</b> (opcional): em <b>Custom domains</b> no projeto do Pages. Se usar, inclua o novo endereço em <code>ALLOWED_ORIGIN</code>, separado por vírgula.</li>
+<li><b>Licenças:</b> mantenha a tela "Fontes e licenças" (ícone ⓘ). Ela cumpre as exigências da Bíblia Livre, do OSHB, do OpenBible e do léxico de Strong.</li>
+</ul>
+
+<h2><span class="n">5</span> Depois: lojas de aplicativos</h2>
+<p>Com o app no ar, o próximo passo é a Google Play: o site <a href="https://www.pwabuilder.com" target="_blank" rel="noopener">pwabuilder.com</a> gera o pacote Android a partir do endereço do app. A App Store vem depois, se houver procura.</p>
+
+<h3>Lista de verificação</h3>
+<ul class="check">
+<li>E-mail de contato trocado em <code>privacidade.html</code></li>
+<li>App publicado e abrindo no celular</li>
+<li>Instalação testada no Android e no iPhone</li>
+<li>(IA) Chave criada e limite de gastos definido</li>
+<li>(IA) Worker ativo, com <code>ALLOWED_ORIGIN</code> e <code>APP_ACCESS_CODE</code></li>
+<li>(IA) <code>config.js</code> atualizado e app reenviado</li>
+<li>Backup de notas testado</li>
+</ul>
+</main></body></html>

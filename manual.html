@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scriptorium Bíblico · Manual do usuário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Gentium+Book+Plus&family=Noto+Serif+Hebrew&display=swap">
+<style>
+:root{
+  --bg:#F3F4F1; --paper:#FFFFFF; --ink:#1B2230; --muted:#5D6574; --faint:#8A919C; --line:#DADDE1;
+  --lapis:#11203A; --accent:#1F4E8C; --soft:#E2EAF5; --rubric:#A3352A; --rubric-soft:#F6E4E0; --ok:#2F7A4A;
+  --f-text:"Literata", Georgia, serif; --f-ui:"IBM Plex Sans", system-ui, sans-serif; --f-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media screen and (prefers-color-scheme: dark){
+  :root{--bg:#10141B;--paper:#171C25;--ink:#E3E6EB;--muted:#9BA3B1;--faint:#6F7885;--line:#2A313C;--accent:#8FB0E6;--soft:#1F2B3F;--rubric:#E58C7F;--rubric-soft:#3A2522;--ok:#6CC08C}
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-ui)}
+.doc{max-width:900px;margin:0 auto;padding:0 18px 60px}
+a{color:var(--accent)}
+b,strong{font-weight:600}
+
+/* cover */
+.cover{background:var(--lapis);color:#E8EBEE;margin:0 -18px;padding:56px 34px 40px;position:relative;overflow:hidden}
+.cover .eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(232,235,238,.62);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid rgba(232,235,238,.18)}
+.cover .eyebrow span:last-child{color:#E0634E}
+.cover h1{font:600 clamp(40px,8vw,72px)/1 var(--f-text);margin:48px 0 6px;letter-spacing:-.01em}
+.cover h1 i{display:block;font-weight:400;color:#E0634E;font-size:.62em;margin-top:8px}
+.cover p.lead{max-width:34em;font:17px/1.6 var(--f-text);color:rgba(232,235,238,.86);margin:22px 0 0}
+.cover .strip{display:flex;gap:26px;margin-top:38px;flex-wrap:wrap;font:13px/1.2 var(--f-mono);letter-spacing:.06em;color:rgba(232,235,238,.7)}
+.cover .strip b{display:block;font:600 24px/1.1 var(--f-text);color:#E8EBEE;letter-spacing:0;margin-bottom:4px}
+.cover .orig{position:absolute;right:26px;top:92px;text-align:right;opacity:.22;font-size:30px;line-height:1.5;pointer-events:none}
+.cover .orig .h{font-family:"Noto Serif Hebrew",serif;direction:rtl}
+.cover .orig .g{font-family:"Gentium Book Plus",serif}
+
+/* toc */
+.toc{margin:34px 0 10px}
+.toc h2{font:600 12px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:28px}
+.toc li{break-inside:avoid;display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.toc li span{font:500 12px/1.9 var(--f-mono);color:var(--rubric);min-width:22px}
+.toc a{color:inherit;text-decoration:none}
+
+/* sections */
+section.s{padding:34px 0 8px;border-top:1px solid var(--line);margin-top:30px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.num{font:500 13px/1 var(--f-mono);color:#fff;background:var(--rubric);padding:5px 7px;border-radius:4px}
+h2.t{font:600 26px/1.2 var(--f-text);margin:0;text-wrap:balance}
+.intro{font:16.5px/1.65 var(--f-text);color:var(--muted);margin:4px 0 16px;max-width:40em}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:28px;align-items:start}
+.cols.nofig{grid-template-columns:minmax(0,1fr)}
+figure{margin:0}
+figure img{width:100%;display:block;border-radius:22px;border:6px solid #1B2230;box-shadow:0 10px 26px rgba(17,32,58,.18);background:#fff}
+figure.wide img{border-radius:10px;border-width:1px;border-color:var(--line)}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.45}
+h3{font:600 12px/1.3 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:18px 0 6px}
+p{margin:0 0 10px}
+ol.steps{counter-reset:st;list-style:none;padding:0;margin:6px 0 12px}
+ol.steps>li{counter-increment:st;position:relative;padding-left:34px;margin:0 0 9px}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:1px;width:23px;height:23px;border-radius:50%;background:var(--soft);color:var(--accent);font:600 12.5px/23px var(--f-mono);text-align:center}
+ul.dots{margin:4px 0 12px;padding-left:1.15em}
+ul.dots li{margin:0 0 6px}
+.k{display:inline-block;font:500 12.5px/1.2 var(--f-ui);border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:2px 7px;white-space:nowrap}
+.k.p{background:var(--accent);color:#fff;border-color:var(--accent)}
+code{font:13px var(--f-mono);background:var(--soft);padding:1px 5px;border-radius:4px}
+.tip{border-left:3px solid var(--accent);background:var(--soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14.5px}
+.tip.warn{border-color:var(--rubric);background:var(--rubric-soft)}
+.tip b:first-child{display:block;font:600 11.5px/1.3 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;color:var(--accent)}
+.tip.warn b:first-child{color:var(--rubric)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 12px}
+th,td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--line)}
+th{font:600 11.5px/1.3 var(--f-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td:first-child{white-space:nowrap;font-weight:600}
+.tbl{overflow-x:auto}
+.lenses{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin:8px 0 12px}
+.lenses div{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 11px;font-size:13.5px}
+.lenses b{display:block;font-size:14px;margin-bottom:2px}
+.route{counter-reset:r;display:grid;gap:8px;margin:8px 0}
+.route div{counter-increment:r;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.route div::before{content:counter(r);font:600 20px/1 var(--f-text);color:var(--rubric)}
+.faq dt{font-weight:600;margin-top:12px}
+.faq dd{margin:3px 0 0;color:var(--ink)}
+.heb{font-family:"Noto Serif Hebrew",serif}.grk{font-family:"Gentium Book Plus",serif}
+footer{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+@media (max-width:720px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  figure{max-width:260px;margin:4px auto 0}
+  figure.wide{max-width:100%}
+  .toc ol{columns:1}
+  .cover .orig{display:none}
+}
+@page{size:A4;margin:15mm 15mm 16mm}
+@media print{
+  html,body{background:#fff}
+  .doc{max-width:none;padding:0}
+  .cover{margin:0 0 0;min-height:265mm;padding:22mm 16mm 16mm;-webkit-print-color-adjust:exact;print-color-adjust:exact;break-after:page}
+  .cover .strip{position:absolute;left:16mm;right:16mm;bottom:18mm}
+  .toc{break-after:page}
+  section.s{break-before:page;border-top:0;margin-top:0;padding-top:0}
+  section.s.cont{break-before:auto;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+  .cols{grid-template-columns:minmax(0,1fr) 58mm;gap:8mm}
+  figure,.tip,.route div,table,.lenses div,ol.steps>li{break-inside:avoid}
+  h3{break-after:avoid}
+  .num,.tip,.k.p,figure img{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:10.5pt}
+  .intro{font-size:11.5pt}
+  a{color:inherit;text-decoration:none}
+  figure.wide{width:86%;margin:10px auto 0!important}
+}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<header class="cover">
+  <div class="eyebrow"><span>Manual do usuário · versão 1</span><span>Jo 5:39</span></div>
+  <div class="orig" aria-hidden="true"><div class="h">בְּרֵאשִׁית</div><div class="g">ἐν ἀρχῇ ἦν ὁ λόγος</div></div>
+  <h1>Scriptorium<i>Bíblico</i></h1>
+  <p class="lead">Guia completo para ler, pesquisar, comentar e montar estudos bíblicos no celular e no computador: do primeiro toque ao estudo exportado em PDF ou Word.</p>
+  <div class="strip">
+    <div><b>3</b>versões em português</div>
+    <div><b>2</b>línguas originais</div>
+    <div><b>28</b>crenças fundamentais</div>
+    <div><b>355</b>capítulos de Ellen G. White</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sumário">
+  <h2>Sumário</h2>
+  <ol>
+    <li><span>01</span><a href="#s1">Conhecendo a tela</a></li>
+    <li><span>02</span><a href="#s2">Navegar pela Bíblia</a></li>
+    <li><span>03</span><a href="#s3">Selecionar versículos e trechos</a></li>
+    <li><span>04</span><a href="#s4">Versões e texto original</a></li>
+    <li><span>05</span><a href="#s5">Léxico hebraico e grego</a></li>
+    <li><span>06</span><a href="#s6">Chave bíblica (busca)</a></li>
+    <li><span>07</span><a href="#s7">Comentário e IA</a></li>
+    <li><span>08</span><a href="#s8">Leitura adventista</a></li>
+    <li><span>09</span><a href="#s9">Referências cruzadas</a></li>
+    <li><span>10</span><a href="#s10">Crenças Fundamentais</a></li>
+    <li><span>11</span><a href="#s11">Enciclopédia</a></li>
+    <li><span>12</span><a href="#s12">Notas</a></li>
+    <li><span>13</span><a href="#s13">Montar e exportar um estudo</a></li>
+    <li><span>14</span><a href="#s14">Instalar, usar offline e fazer backup</a></li>
+    <li><span>15</span><a href="#s15">Roteiros prontos</a></li>
+    <li><span>16</span><a href="#s16">Perguntas frequentes</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section class="s" id="s1">
+  <div class="shead"><span class="num">01</span><h2 class="t">Conhecendo a tela</h2></div>
+  <p class="intro">O app se organiza em três áreas: a busca, o texto bíblico e o painel de estudo.</p>
+  <div class="cols">
+    <div>
+      <h3>No celular</h3>
+      <p>A barra inferior alterna entre as três áreas:</p>
+      <table>
+        <tr><th>Botão</th><th>O que mostra</th></tr>
+        <tr><td>Chave</td><td>A busca por palavras, frases e números de Strong.</td></tr>
+        <tr><td>Texto</td><td>A Bíblia aberta no livro e capítulo escolhidos.</td></tr>
+        <tr><td>Estudo</td><td>As abas Comentário, Léxico, Refs, Crenças, Enciclopédia, Notas e Estudo.</td></tr>
+      </table>
+      <p>No topo ficam o livro, o capítulo, a caixa de referência, as versões e o ícone <span class="k">ⓘ</span> de configurações.</p>
+      <h3>No computador</h3>
+      <p>As três áreas aparecem lado a lado: a busca à esquerda, o texto no centro e o painel de estudo à direita.</p>
+    </div>
+    <figure><img src="manual-img/m-texto.jpg" alt="Tela de texto no celular com um trecho selecionado"><figcaption>Texto no celular, com Jo 3:16-18 selecionado e a barra de ações embaixo.</figcaption></figure>
+  </div>
+  <figure class="wide" style="margin-top:14px"><img src="manual-img/d-visao.jpg" alt="Visão do app no computador com três painéis"><figcaption>No computador: busca à esquerda, texto com o grego ao centro e o léxico da palavra λόγος à direita.</figcaption></figure>
+</section>
+
+<!-- 2 -->
+<section class="s" id="s2">
+  <div class="shead"><span class="num">02</span><h2 class="t">Navegar pela Bíblia</h2></div>
+  <p class="intro">Há três formas de chegar a um texto. Use a que for mais rápida no momento.</p>
+  <div class="cols nofig"><div>
+    <h3>1. Pelos seletores</h3>
+    <p>Escolha o livro e o capítulo nas duas caixas do topo.</p>
+    <h3>2. Digitando a referência</h3>
+    <p>Escreva na caixa do topo e toque em <span class="k">Ir</span>. O app entende abreviações e nomes completos, com ou sem acento:</p>
+    <table>
+      <tr><th>Você digita</th><th>O app abre</th></tr>
+      <tr><td><code>Jo 3:16</code></td><td>João 3, com o versículo 16 selecionado</td></tr>
+      <tr><td><code>Jo 3:16-21</code></td><td>João 3, com o trecho 16 a 21 selecionado</td></tr>
+      <tr><td><code>Sl 23</code></td><td>Salmo 23 inteiro</td></tr>
+      <tr><td><code>1co 13</code></td><td>1 Coríntios 13</td></tr>
+      <tr><td><code>apocalipse 14.6</code></td><td>Apocalipse 14:6</td></tr>
+      <tr><td><code>Jó 19:25</code></td><td>Jó 19:25 (com acento é Jó; sem acento, <code>jo</code> abre João)</td></tr>
+    </table>
+    <h3>3. Tocando em uma referência</h3>
+    <p>Toda referência sublinhada no app (na enciclopédia, nas crenças, nos comentários e nas introduções) é um atalho: toque e o texto abre.</p>
+    <p>Para mudar de capítulo, use as setas <span class="k">‹</span> <span class="k">›</span> no topo ou os botões <span class="k">← Anterior</span> e <span class="k">Próximo →</span> no fim do capítulo.</p>
+  </div></div>
+</section>
+
+<!-- 3 -->
+<section class="s" id="s3">
+  <div class="shead"><span class="num">03</span><h2 class="t">Selecionar versículos e trechos</h2></div>
+  <p class="intro">Tudo o que o painel de estudo mostra (comentário, referências, leituras e notas) se refere à seleção atual. Ela pode ser um versículo, um trecho ou o capítulo inteiro.</p>
+  <div class="cols nofig"><div>
+    <table>
+      <tr><th>Para selecionar</th><th>No celular</th><th>No computador</th></tr>
+      <tr><td>Um versículo</td><td>Toque no versículo</td><td>Clique no versículo</td></tr>
+      <tr><td>Um trecho</td><td>Toque no primeiro, depois em <span class="k">Até…</span> e no último</td><td>Clique no primeiro e dê Shift+clique no último, ou use <span class="k">Estender</span></td></tr>
+      <tr><td>O capítulo</td><td colspan="2">Botão <span class="k">Capítulo</span> no painel de estudo</td></tr>
+      <tr><td>Pela referência</td><td colspan="2">Digite o intervalo, por exemplo <code>Mt 5:1-12</code></td></tr>
+    </table>
+    <p>Os versículos selecionados ficam com fundo azul-claro. No celular, a barra escura mostra a seleção e atalhos para <b>Comentar</b>, <b>Refs</b> e <b>Nota</b>.</p>
+    <div class="tip"><b>Dica</b>Trechos dão análises melhores. Para uma parábola, um discurso ou uma narrativa, selecione a passagem inteira antes de pedir o comentário.</div>
+  </div></div>
+</section>
+
+<!-- 4 -->
+<section class="s" id="s4">
+  <div class="shead"><span class="num">04</span><h2 class="t">Versões e texto original</h2></div>
+  <p class="intro">Os botões arredondados do topo ligam e desligam cada versão. Com mais de uma ligada, o texto aparece versículo por versículo, lado a lado.</p>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Botão</th><th>Versão</th></tr>
+        <tr><td>TB</td><td>Tradução Brasileira</td></tr>
+        <tr><td>ALM</td><td>Almeida 1911</td></tr>
+        <tr><td>BLIVRE</td><td>Bíblia Livre</td></tr>
+        <tr><td>Original</td><td>Hebraico (Antigo Testamento, Códice de Leningrado) ou grego (Novo Testamento, Texto Bizantino)</td></tr>
+        <tr><td>nº Strong</td><td>Mostra o número de Strong embaixo de cada palavra original (no computador)</td></tr>
+      </table>
+      <p>A primeira versão ligada é a principal: ela é usada na busca, nas referências e nos textos enviados ao estudo.</p>
+      <div class="tip"><b>Numeração</b>Em alguns capítulos, a numeração do hebraico difere da portuguesa (títulos dos Salmos, Joel 2–3, Malaquias 3–4). Nos Salmos, o app alinha automaticamente e mostra o título como "tít.".</div>
+    </div>
+    <figure><img src="manual-img/m-original.jpg" alt="João 1 com o texto grego abaixo da tradução"><figcaption>João 1 com a Tradução Brasileira e o grego.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="s" id="s5">
+  <div class="shead"><span class="num">05</span><h2 class="t">Léxico hebraico e grego</h2></div>
+  <p class="intro">Com o <b>Original</b> ligado, cada palavra hebraica ou grega pode ser tocada. O app abre a aba <b>Léxico</b> com a análise completa.</p>
+  <div class="cols">
+    <div>
+      <h3>O que aparece</h3>
+      <ul class="dots">
+        <li><b>Forma no texto e morfologia em português:</b> por exemplo, "verbo, aoristo, ativa, indicativo, 3ª pessoa, singular".</li>
+        <li><b>Verbete de Strong:</b> palavra no dicionário (lema), transliteração, definição, como a King James traduz e a origem da palavra. As definições originais estão em inglês.</li>
+        <li><b>Concordância do original:</b> quantas vezes a palavra ocorre, em quantos versículos, em quais formas e em quais livros.</li>
+      </ul>
+      <h3>Botões</h3>
+      <table>
+        <tr><td><span class="k p">Explicar em português</span></td><td>A IA explica o termo, o campo de sentido, os usos principais e o sentido no versículo.</td></tr>
+        <tr><td><span class="k">Todas as ocorrências</span></td><td>Lista todos os versículos com a palavra na Chave bíblica.</td></tr>
+        <tr><td><span class="k">+ Estudo</span></td><td>Envia o verbete ao seu estudo.</td></tr>
+      </table>
+      <p>Na linha "Origem", os números como <b>G3004</b> também são tocáveis e abrem o verbete da palavra de origem.</p>
+    </div>
+    <figure><img src="manual-img/m-lexico.jpg" alt="Painel de léxico da palavra logos"><figcaption>Verbete de λόγος (G3056) com a morfologia em português.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="s" id="s6">
+  <div class="shead"><span class="num">06</span><h2 class="t">Chave bíblica (busca)</h2></div>
+  <p class="intro">A concordância do app: encontra qualquer palavra, frase ou número de Strong em toda a Bíblia.</p>
+  <div class="cols">
+    <div>
+      <ol class="steps">
+        <li>Abra <b>Chave</b> (celular) ou use o painel da esquerda (computador).</li>
+        <li>Digite o termo e escolha o modo, o escopo e a versão.</li>
+        <li>Toque em <span class="k p">Buscar</span>. Toque em um resultado para abrir o texto.</li>
+      </ol>
+      <table>
+        <tr><th>Opção</th><th>Como funciona</th></tr>
+        <tr><td>Todas as palavras</td><td>Versículos que têm todas as palavras digitadas, em qualquer ordem.</td></tr>
+        <tr><td>Frase exata</td><td>As palavras juntas, na ordem digitada.</td></tr>
+        <tr><td>Qualquer palavra</td><td>Versículos que têm pelo menos uma das palavras.</td></tr>
+        <tr><td>Escopo</td><td>Bíblia toda, Antigo Testamento, Novo Testamento ou o livro atual.</td></tr>
+        <tr><td><code>salv*</code></td><td>O asterisco busca o começo da palavra: salvação, salvar, salvo…</td></tr>
+        <tr><td><code>G26</code> / <code>H2617</code></td><td>Busca pelo número de Strong no texto original: todas as ocorrências de <span class="grk">ἀγάπη</span> ou <span class="heb">חֶסֶד</span>.</td></tr>
+      </table>
+      <p>Acentos não importam: <code>graca</code> encontra "graça". O gráfico de barras mostra em quais livros o termo aparece mais. Toque numa barra para filtrar só aquele livro.</p>
+    </div>
+    <figure><img src="manual-img/m-chave.jpg" alt="Resultados da busca pela palavra graça"><figcaption>Busca por "graça": 211 ocorrências, distribuídas por livro.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="s" id="s7">
+  <div class="shead"><span class="num">07</span><h2 class="t">Comentário e IA</h2></div>
+  <p class="intro">A aba <b>Comentário</b> reúne a introdução ao livro, a leitura adventista e os comentários gerados por inteligência artificial para a seleção atual.</p>
+  <div class="cols">
+    <div>
+      <h3>Tipos de comentário</h3>
+      <div class="lenses">
+        <div><b>Exegético</b>Estrutura, palavras-chave no original e gramática.</div>
+        <div><b>Histórico-cultural</b>Contexto, costumes, geografia e arqueologia.</div>
+        <div><b>Teológico</b>Temas doutrinários e ligação com o restante da Bíblia.</div>
+        <div><b>Devocional</b>Aplicações práticas, pergunta para meditação e oração.</div>
+        <div><b>Esboço de sermão</b>Título, introdução, três pontos, ilustração e apelo.</div>
+        <div><b>Resumo do capítulo</b>Divisões do capítulo e ideia central de cada parte.</div>
+      </div>
+      <h3>Como usar</h3>
+      <ol class="steps">
+        <li>Selecione o versículo ou o trecho.</li>
+        <li>Escolha a perspectiva: <b>adventista</b>, <b>evangélica geral</b> ou <b>acadêmica</b>.</li>
+        <li>Toque no tipo de comentário. O texto aparece enquanto é escrito, e o botão <span class="k">Parar</span> interrompe.</li>
+        <li>Para uma dúvida específica, escreva em <b>Pergunte algo sobre este texto</b>.</li>
+      </ol>
+      <p>Depois do comentário, use <span class="k p">+ Estudo</span>, <span class="k">Copiar</span> ou <span class="k">Salvar na nota</span>.</p>
+      <div class="tip warn"><b>Importante</b>A IA é uma ajuda ao estudo, não uma autoridade. Confira sempre com as Escrituras e as obras de referência. Na perspectiva adventista, ela indica os capítulos de Ellen G. White e as crenças relacionadas, mas foi instruída a não inventar citações.</div>
+      <h3>Introdução ao livro</h3>
+      <p>Mais abaixo na aba ficam o autor, a data, o tema, o texto-chave, o resumo e o esboço de cada um dos 66 livros. Os capítulos do esboço também são atalhos.</p>
+    </div>
+    <figure><img src="manual-img/m-comentario.jpg" alt="Aba Comentário com tipos de comentário e leitura adventista"><figcaption>Aba Comentário para Jo 3:16-18.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="s" id="s8">
+  <div class="shead"><span class="num">08</span><h2 class="t">Leitura adventista</h2></div>
+  <p class="intro">Um quadro da aba Comentário que mostra, para a seleção atual, as leituras complementares da tradição adventista.</p>
+  <div class="cols nofig"><div>
+    <table>
+      <tr><th>Item</th><th>O que traz</th></tr>
+      <tr><td>Ellen G. White</td><td>Capítulos que tratam da passagem em <i>Patriarcas e Profetas</i>, <i>Profetas e Reis</i>, <i>O Desejado de Todas as Nações</i>, <i>Parábolas de Jesus</i>, <i>O Maior Discurso de Cristo</i>, <i>Atos dos Apóstolos</i> e <i>O Grande Conflito</i>. O botão <span class="k">Ler ↗</span> abre o livro em PDF gratuito do Centro de Pesquisas Ellen G. White.</td></tr>
+      <tr><td>Crenças relacionadas</td><td>Crenças Fundamentais que usam a passagem como texto-base. Toque para abrir.</td></tr>
+      <tr><td>Comentário Bíblico Adventista</td><td>O volume da Série Logos que comenta aquele livro.</td></tr>
+    </table>
+    <p>Exemplo: em <b>Dn 8:14</b> aparecem <i>O Grande Conflito</i>, caps. 18 e 23, e a Crença 24, O Ministério de Cristo no Santuário Celestial.</p>
+    <div class="tip"><b>Sobre os livros</b>Os textos de <i>Nisto Cremos</i>, do <i>Tratado de Teologia Adventista</i> e da Série Logos são protegidos por direitos autorais. O app indica livro e capítulo para você consultar o seu exemplar.</div>
+  </div></div>
+</section>
+
+<!-- 9 -->
+<section class="s cont" id="s9">
+  <div class="shead"><span class="num">09</span><h2 class="t">Referências cruzadas</h2></div>
+  <p class="intro">A aba <b>Refs</b> lista os textos ligados à seleção, com o texto de cada um, ordenados por relevância.</p>
+  <div class="cols nofig"><div>
+    <ul class="dots">
+      <li>Para um versículo, aparecem todas as referências registradas para ele.</li>
+      <li>Para um trecho, o app junta as referências de todos os versículos, sem repetir, até 60.</li>
+      <li>Toque numa referência para abrir o texto.</li>
+      <li><span class="k">+ 12 principais ao estudo</span> leva as mais relevantes, com os textos, para o seu estudo.</li>
+    </ul>
+  </div></div>
+</section>
+
+<!-- 10 -->
+<section class="s" id="s10">
+  <div class="shead"><span class="num">10</span><h2 class="t">Crenças Fundamentais</h2></div>
+  <p class="intro">A aba <b>Crenças</b> apresenta as 28 Crenças Fundamentais da Igreja Adventista do Sétimo Dia.</p>
+  <div class="cols">
+    <div>
+      <p>Cada crença traz:</p>
+      <ul class="dots">
+        <li>um resumo e o link para o texto oficial em adventistas.org;</li>
+        <li>os textos-base, todos tocáveis;</li>
+        <li><b>Para aprofundar:</b> capítulos de Ellen G. White (com link), o capítulo de <i>Nisto Cremos</i> e o tema no <i>Tratado de Teologia Adventista</i>;</li>
+        <li><span class="k p">Estudo com IA</span>: um estudo bíblico completo, com fundamento, desenvolvimento, relação com outras crenças, leituras de Ellen White, aplicação e perguntas para discussão;</li>
+        <li><span class="k">+ Estudo</span>: envia a crença, com textos e leituras, ao seu estudo.</li>
+      </ul>
+      <div class="tip"><b>Uso em classe</b>O Estudo com IA sobre uma crença, somado aos textos-base e exportado em PDF, vira um material pronto para um pequeno grupo ou uma classe bíblica.</div>
+    </div>
+    <figure><img src="manual-img/m-crenca.jpg" alt="Crença 24 aberta"><figcaption>Crença 24, com resumo, textos-base e leituras.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="s" id="s11">
+  <div class="shead"><span class="num">11</span><h2 class="t">Enciclopédia</h2></div>
+  <p class="intro">119 verbetes sobre pessoas, lugares, doutrinas, festas, medidas, profecias e textos bíblicos.</p>
+  <ul class="dots">
+    <li>Busque pelo nome ou filtre por categoria.</li>
+    <li><span class="k">Aprofundar com IA</span> amplia o verbete com dados bíblicos, contexto histórico e significado teológico.</li>
+    <li>Não encontrou um termo? Digite-o na busca e toque em <span class="k p">Gerar verbete com IA</span>.</li>
+  </ul>
+</section>
+
+<!-- 12 -->
+<section class="s cont" id="s12">
+  <div class="shead"><span class="num">12</span><h2 class="t">Notas</h2></div>
+  <p class="intro">Anotações pessoais ligadas a um versículo ou a um trecho.</p>
+  <ul class="dots">
+    <li>Selecione o texto, abra a aba <b>Notas</b> e escreva. A nota é salva sozinha.</li>
+    <li>Versículos com nota ganham um ponto verde no texto.</li>
+    <li>A lista "Todas as anotações" mostra suas notas em ordem bíblica. Toque para abrir.</li>
+    <li>Comentários da IA podem ir direto para a nota com <span class="k">Salvar na nota</span>.</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section class="s" id="s13">
+  <div class="shead"><span class="num">13</span><h2 class="t">Montar e exportar um estudo</h2></div>
+  <p class="intro">A aba <b>Estudo</b> é o seu caderno. Ali você junta o que encontrou no app, organiza e exporta em PDF ou Word.</p>
+  <div class="cols">
+    <div>
+      <h3>O que pode ir para o estudo</h3>
+      <p>Os botões <span class="k">+ Estudo</span> ficam em todo o app:</p>
+      <table>
+        <tr><td>Texto bíblico</td><td>Versículo ou trecho, nas versões ligadas</td></tr>
+        <tr><td>Comentários</td><td>Qualquer resposta da IA</td></tr>
+        <tr><td>Léxico</td><td>Verbete da palavra original</td></tr>
+        <tr><td>Referências</td><td>As 12 principais, com os textos</td></tr>
+        <tr><td>Crenças e enciclopédia</td><td>Verbete completo</td></tr>
+        <tr><td>Notas e texto livre</td><td>Suas anotações e parágrafos próprios</td></tr>
+      </table>
+      <h3>Passo a passo</h3>
+      <ol class="steps">
+        <li>Na aba <b>Estudo</b>, dê um título e, se quiser, um subtítulo (por exemplo, "Classe bíblica · sábado").</li>
+        <li>Organize os itens com <span class="k">↑</span> <span class="k">↓</span>, edite com <span class="k">✎</span> e remova com <span class="k">✕</span>.</li>
+        <li>Acrescente introdução ou conclusão com <span class="k">+ Texto livre</span>.</li>
+        <li>Toque em <span class="k p">Exportar PDF</span> ou <span class="k p">Exportar Word</span>.</li>
+      </ol>
+      <p>O documento sai com título, data, textos bíblicos destacados, subtítulos e paginação. No celular, o arquivo abre a tela de compartilhar, para enviar pelo WhatsApp ou salvar.</p>
+      <p>Você pode ter vários estudos. Troque entre eles, ou crie um novo, pelo seletor no topo da aba.</p>
+      <div class="tip"><b>Word ou PDF?</b>O PDF é bom para enviar e imprimir. O Word é bom para continuar editando. No Word, o hebraico e o grego aparecem com perfeição.</div>
+    </div>
+    <figure><img src="manual-img/m-estudo.jpg" alt="Aba Estudo com título e itens"><figcaption>Estudo "A nova aliança", com os botões de exportação.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="s" id="s14">
+  <div class="shead"><span class="num">14</span><h2 class="t">Instalar, usar offline e fazer backup</h2></div>
+  <p class="intro">Tudo isso fica no ícone <span class="k">ⓘ</span>, no canto superior direito.</p>
+  <div class="cols nofig"><div>
+    <h3>Instalar como aplicativo</h3>
+    <table>
+      <tr><td>Android</td><td>Toque em <span class="k p">Instalar app</span> no topo, ou no menu ⋮ do Chrome → <b>Instalar app</b>.</td></tr>
+      <tr><td>iPhone</td><td>No Safari, toque em <b>Compartilhar</b> → <b>Adicionar à Tela de Início</b>.</td></tr>
+      <tr><td>Computador</td><td>Ícone de instalar na barra de endereço do Chrome ou do Edge.</td></tr>
+    </table>
+    <h3>Usar sem internet</h3>
+    <p>Em <span class="k">ⓘ</span>, toque em <b>Baixar tudo para uso offline</b>. São cerca de 35 MB, então prefira o Wi-Fi. Depois disso, leitura, original, léxico, busca, referências, crenças, enciclopédia, notas e exportação funcionam sem conexão. Só a IA precisa de internet.</p>
+    <h3>Backup</h3>
+    <p>Suas notas e estudos ficam salvos no próprio aparelho. Use <b>Exportar backup</b> com frequência e sempre antes de trocar de celular. No aparelho novo, use <b>Importar backup</b>.</p>
+    <div class="tip warn"><b>Atenção</b>Limpar os dados do navegador ou desinstalar o app apaga notas e estudos que não estiverem num backup.</div>
+    <h3>Código de acesso da IA</h3>
+    <p>Se quem administra o app definiu um código, digite-o em <b>Inteligência artificial</b> e toque em <span class="k">Salvar</span>.</p>
+  </div></div>
+</section>
+
+<!-- 15 -->
+<section class="s" id="s15">
+  <div class="shead"><span class="num">15</span><h2 class="t">Roteiros prontos</h2></div>
+  <p class="intro">Três caminhos para usar os recursos em conjunto.</p>
+  <h3>Preparar a lição da Escola Sabatina</h3>
+  <div class="route">
+    <div><span>Abra o texto-base da semana digitando o trecho (por exemplo, <code>Rm 3:21-26</code>).</span></div>
+    <div><span>Leia em duas versões, ligando TB e ALM.</span></div>
+    <div><span>Em <b>Refs</b>, leia as referências principais e envie-as ao estudo.</span></div>
+    <div><span>Em <b>Comentário</b>, gere o <b>Histórico-cultural</b> e o <b>Teológico</b>, na perspectiva adventista.</span></div>
+    <div><span>Confira os capítulos de Ellen G. White indicados na <b>Leitura adventista</b>.</span></div>
+    <div><span>Escreva suas conclusões em <b>+ Texto livre</b> e exporte em PDF para a classe.</span></div>
+  </div>
+  <h3>Estudar uma palavra no original</h3>
+  <div class="route">
+    <div><span>Ligue o <b>Original</b> e toque na palavra, por exemplo <span class="grk">ἀγάπη</span> em 1Co 13.</span></div>
+    <div><span>Leia a morfologia e o verbete e toque em <b>Explicar em português</b>.</span></div>
+    <div><span>Toque em <b>Todas as ocorrências</b> e percorra os resultados por livro.</span></div>
+    <div><span>Envie o verbete e a explicação ao estudo.</span></div>
+  </div>
+  <h3>Montar um sermão</h3>
+  <div class="route">
+    <div><span>Selecione o trecho inteiro da pregação.</span></div>
+    <div><span>Gere o <b>Exegético</b> para entender o texto e depois o <b>Esboço de sermão</b>.</span></div>
+    <div><span>Use a pergunta livre para buscar ilustrações ou aplicações específicas.</span></div>
+    <div><span>Organize no <b>Estudo</b> e exporte em Word para ajustar com o seu estilo.</span></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="s" id="s16">
+  <div class="shead"><span class="num">16</span><h2 class="t">Perguntas frequentes</h2></div>
+  <dl class="faq">
+    <dt>Por que não aparecem a Almeida Revista e Atualizada, a NVI ou a Nova Almeida?</dt>
+    <dd>Essas versões têm direitos autorais. O app usa três versões livres: Tradução Brasileira, Almeida 1911 e Bíblia Livre.</dd>
+    <dt>A IA não responde. O que fazer?</dt>
+    <dd>Verifique a internet. Se aparecer a mensagem de código de acesso, digite o código em <span class="k">ⓘ</span>. Se a mensagem disser que a IA não está ativada, o restante do app funciona normalmente.</dd>
+    <dt>As definições do léxico estão em inglês. Tem em português?</dt>
+    <dd>O dicionário de Strong original é em inglês. O botão <b>Explicar em português</b> traduz e explica cada verbete.</dd>
+    <dt>A numeração do hebraico não bate com a do português.</dt>
+    <dd>É normal em alguns capítulos. Nos Salmos com título, o app ajusta sozinho. Em Joel e Malaquias, a divisão de capítulos é diferente.</dd>
+    <dt>Perdi minhas notas ao trocar de celular.</dt>
+    <dd>As notas ficam no aparelho. Use <b>Exportar backup</b> no aparelho antigo e <b>Importar backup</b> no novo.</dd>
+    <dt>Posso usar os comentários da IA em pregações?</dt>
+    <dd>Sim, como ponto de partida. Revise, confira as referências e dê a sua voz ao texto.</dd>
+  </dl>
+  <h3>Fontes e créditos</h3>
+  <p style="font-size:13.5px;color:var(--muted)">Tradução Brasileira e Almeida 1911 (domínio público) · Bíblia Livre (CC BY) · Hebraico: Westminster Leningrad Codex e Open Scriptures Hebrew Bible (CC BY 4.0) · Grego: Robinson-Pierpont, Texto Bizantino 2018 (domínio público) · Dicionários de Strong, edição Open Scriptures (CC BY-SA) · Referências cruzadas: OpenBible.info (CC BY) · Livros de Ellen G. White: PDFs do Centro de Pesquisas Ellen G. White · Comentário com IA: modelo Claude, da Anthropic.</p>
+  <footer><span>Scriptorium Bíblico · Manual do usuário</span><span>“Examinai as Escrituras.” Jo 5:39</span></footer>
+</section>
+
+</div>
+</body>
+</html>
